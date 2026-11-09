@@ -1,4 +1,4 @@
-const CACHE = 'invitacion-eli13-v1';
+const CACHE = 'invitacion-eli13-v2';
 const SHELL = [
   './',
   './index.html',
