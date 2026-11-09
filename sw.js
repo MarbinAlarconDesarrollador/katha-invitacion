@@ -5,6 +5,7 @@ const SHELL = [
   './manifest.json',
   '../img/pwa-icon-192.png',
   '../img/pwa-icon-512.png',
+  '../img/preview.png',
   '../img/orchid.png',
   '../img/katha-y-papa.jpeg'
 ];
