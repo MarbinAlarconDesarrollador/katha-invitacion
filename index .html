@@ -1,0 +1,1202 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Invitación · Los 13 de Eli Kathaleia</title>
+    <meta
+      name="description"
+      content="Estás invitado a la partida de torta de Eli Kathaleia: 16 de noviembre, 5:00 pm."
+    />
+
+    <link rel="manifest" href="manifest.json" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="../img/pwa-icon-192.png"
+    />
+    <link rel="apple-touch-icon" href="../img/pwa-icon-192.png" />
+    <meta name="theme-color" content="#7b2d5b" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="Invitación Eli 13" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Great+Vibes&family=Jost:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --ink: #3b2a41;
+        --ink-soft: #6d5a73;
+        --plum: #7b2d5b;
+        --orchid: #b04a8f;
+        --rose: #f3a6bb;
+        --lilac: #eadcfa;
+        --gold: #c9a24b;
+        --gold-light: #f1d98a;
+        --paper: #fffdfb;
+        --font-script: "Great Vibes", cursive;
+        --font-serif: "Cormorant Garamond", Georgia, serif;
+        --font-sans: "Jost", system-ui, sans-serif;
+        --safe-b: env(safe-area-inset-bottom, 0px);
+      }
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        font-family: var(--font-sans);
+        font-weight: 300;
+        color: var(--ink);
+        background: linear-gradient(
+          160deg,
+          #fff7f9 0%,
+          #f6ecfb 55%,
+          #fdf3ee 100%
+        );
+        background-attachment: fixed;
+        min-height: 100vh;
+        overflow-x: hidden;
+        text-align: center;
+      }
+      body.locked {
+        overflow: hidden;
+      }
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        font-weight: 500;
+      }
+      button {
+        font-family: inherit;
+      }
+      a {
+        color: inherit;
+      }
+
+      /* Fondo */
+      .bg {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        overflow: hidden;
+      }
+      .blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(70px);
+        opacity: 0.55;
+        animation: drift 18s ease-in-out infinite alternate;
+      }
+      .blob.b1 {
+        width: 60vmax;
+        height: 60vmax;
+        background: #ffd3e0;
+        top: -20vmax;
+        left: -20vmax;
+      }
+      .blob.b2 {
+        width: 55vmax;
+        height: 55vmax;
+        background: #e3d0fb;
+        bottom: -22vmax;
+        right: -18vmax;
+        animation-delay: -6s;
+      }
+      .blob.b3 {
+        width: 35vmax;
+        height: 35vmax;
+        background: #fbe8b8;
+        top: 40%;
+        left: 55%;
+        opacity: 0.35;
+        animation-delay: -11s;
+      }
+      .orchid {
+        position: absolute;
+        opacity: 0.38;
+        -webkit-mask-image: radial-gradient(circle, #000 42%, transparent 82%);
+        mask-image: radial-gradient(circle, #000 42%, transparent 82%);
+      }
+      .orchid.o1 {
+        top: 4%;
+        left: -6%;
+        width: min(42vw, 230px);
+        transform: rotate(-15deg);
+      }
+      .orchid.o2 {
+        top: 45%;
+        right: -7%;
+        width: min(46vw, 250px);
+        transform: rotate(14deg);
+      }
+      .orchid.o3 {
+        bottom: 3%;
+        left: -5%;
+        width: min(38vw, 210px);
+        transform: rotate(8deg) scaleX(-1);
+      }
+      @keyframes drift {
+        to {
+          transform: translate3d(5vmax, 4vmax, 0) scale(1.08);
+        }
+      }
+
+      /* Música */
+      .music-btn {
+        position: fixed;
+        right: 14px;
+        bottom: calc(14px + var(--safe-b));
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        border: 1.5px solid var(--gold);
+        background: rgba(255, 255, 255, 0.88);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        box-shadow: 0 6px 18px rgba(123, 45, 91, 0.15);
+        display: none;
+        place-items: center;
+        cursor: pointer;
+        z-index: 900;
+      }
+      .music-btn.visible {
+        display: grid;
+      }
+      .music-btn svg {
+        width: 22px;
+        height: 22px;
+        stroke: var(--plum);
+        fill: none;
+        stroke-width: 1.6;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .music-btn .off {
+        display: none;
+      }
+      .music-btn.muted .on {
+        display: none;
+      }
+      .music-btn.muted .off {
+        display: block;
+      }
+
+      /* Sobre de apertura */
+      #cover {
+        position: fixed;
+        inset: 0;
+        z-index: 500;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 24px;
+        background: linear-gradient(
+          160deg,
+          #fff7f9 0%,
+          #f6ecfb 55%,
+          #fdf3ee 100%
+        );
+        transition:
+          opacity 1.1s ease,
+          visibility 1.1s,
+          transform 1.1s ease;
+      }
+      #cover.hide {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: scale(1.04);
+      }
+      .eyebrow {
+        font-family: var(--font-serif);
+        font-style: italic;
+        font-size: 1.2rem;
+        letter-spacing: 0.08em;
+        color: var(--ink-soft);
+      }
+      .seal {
+        width: 108px;
+        height: 108px;
+        border-radius: 50%;
+        margin: 22px auto;
+        display: grid;
+        place-items: center;
+        font-size: 3rem;
+        background: radial-gradient(circle at 35% 30%, #d9628f, var(--plum));
+        box-shadow:
+          0 14px 30px rgba(123, 45, 91, 0.35),
+          inset 0 -6px 12px rgba(0, 0, 0, 0.18);
+        border: 2px solid var(--gold-light);
+        animation: beat 2.6s ease-in-out infinite;
+      }
+      @keyframes beat {
+        50% {
+          transform: scale(1.06);
+        }
+      }
+      .cover-name {
+        font-family: var(--font-script);
+        font-size: clamp(3.2rem, 16vw, 5.4rem);
+        line-height: 1.05;
+        background: linear-gradient(
+          120deg,
+          var(--plum),
+          var(--orchid) 50%,
+          var(--gold)
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        padding: 0 0.1em 0.15em;
+      }
+      .cover-sub {
+        color: var(--ink-soft);
+        margin: 6px 0 26px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: 0;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        padding: 14px 30px;
+        border-radius: 999px;
+        color: #fff;
+        text-decoration: none;
+        background: linear-gradient(135deg, var(--plum), var(--orchid));
+        box-shadow: 0 10px 24px rgba(123, 45, 91, 0.28);
+        transition: transform 0.2s;
+      }
+      .btn:active {
+        transform: scale(0.96);
+      }
+      .btn.ghost {
+        background: rgba(255, 255, 255, 0.7);
+        color: var(--plum);
+        border: 1.5px solid var(--plum);
+        box-shadow: none;
+        padding: 12px 22px;
+        font-size: 0.92rem;
+      }
+      .btn.gold {
+        background: linear-gradient(135deg, #a07a28, var(--gold));
+        box-shadow: 0 10px 24px rgba(160, 122, 40, 0.3);
+      }
+
+      /* Contenido */
+      #invite {
+        display: none;
+        opacity: 0;
+        transition: opacity 1.4s ease;
+      }
+      #invite.show {
+        opacity: 1;
+      }
+      section {
+        padding: 0 20px;
+      }
+      .wrap {
+        max-width: 560px;
+        margin: 0 auto;
+      }
+
+      .hero {
+        min-height: 100svh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        padding: 40px 20px 90px;
+      }
+      .hero-photo {
+        width: min(52vw, 210px);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-bottom: 18px;
+        border: 3px solid var(--gold);
+        box-shadow:
+          0 0 0 8px rgba(255, 255, 255, 0.7),
+          0 18px 40px rgba(123, 45, 91, 0.25);
+        background: var(--lilac);
+      }
+      .hero-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .hero-13 {
+        font-family: var(--font-serif);
+        font-weight: 600;
+        font-size: clamp(7rem, 34vw, 12rem);
+        line-height: 0.85;
+        background: linear-gradient(
+          160deg,
+          var(--gold-light) 0%,
+          var(--gold) 45%,
+          #a07a28 70%,
+          var(--gold-light) 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        filter: drop-shadow(0 8px 18px rgba(201, 162, 75, 0.35));
+        margin: 4px 0 0;
+      }
+      .hero-title {
+        font-family: var(--font-script);
+        font-size: clamp(2.6rem, 12vw, 4.2rem);
+        color: var(--plum);
+        margin-top: -4px;
+      }
+      .hero-sub {
+        font-family: var(--font-serif);
+        font-style: italic;
+        font-size: 1.3rem;
+        color: var(--ink-soft);
+        margin: 8px 0 0;
+      }
+      .scroll-cue {
+        position: absolute;
+        bottom: 26px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: var(--plum);
+        font-size: 0.78rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        opacity: 0.75;
+      }
+      .scroll-cue::after {
+        content: "";
+        display: block;
+        width: 1px;
+        height: 32px;
+        margin: 8px auto 0;
+        background: linear-gradient(var(--plum), transparent);
+        animation: cue 1.8s ease-in-out infinite;
+      }
+      @keyframes cue {
+        0%,
+        100% {
+          transform: scaleY(0.4);
+          transform-origin: top;
+        }
+        50% {
+          transform: scaleY(1);
+          transform-origin: top;
+        }
+      }
+
+      .divider {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        justify-content: center;
+        color: var(--gold);
+        margin: 10px auto 34px;
+        max-width: 280px;
+      }
+      .divider::before,
+      .divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--gold));
+      }
+      .divider::after {
+        transform: scaleX(-1);
+      }
+
+      /* Tarjeta */
+      .card {
+        margin: 0 auto 60px;
+        background: var(--paper);
+        border-radius: 6px;
+        padding: clamp(28px, 8vw, 46px) clamp(22px, 7vw, 40px);
+        position: relative;
+        box-shadow:
+          0 24px 50px rgba(123, 45, 91, 0.14),
+          0 2px 6px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(201, 162, 75, 0.35);
+        background-image: repeating-linear-gradient(
+          transparent 0 33px,
+          rgba(201, 162, 75, 0.08) 33px 34px
+        );
+      }
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: 8px;
+        border: 1px solid rgba(201, 162, 75, 0.3);
+        border-radius: 3px;
+        pointer-events: none;
+      }
+      .card .lead {
+        font-family: var(--font-serif);
+        font-size: clamp(1.2rem, 4.8vw, 1.4rem);
+        line-height: 1.6;
+        color: #4a3a50;
+        margin: 0 0 8px;
+      }
+      .card .lead b {
+        color: var(--plum);
+        font-weight: 600;
+      }
+      .section-title {
+        font-family: var(--font-script);
+        font-size: clamp(2.4rem, 10vw, 3.3rem);
+        color: var(--plum);
+        line-height: 1.1;
+        margin-bottom: 14px;
+      }
+
+      .details {
+        display: grid;
+        gap: 14px;
+        margin: 24px 0 8px;
+        text-align: left;
+      }
+      .detail {
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        background: #fff;
+        border: 1px solid rgba(243, 166, 187, 0.4);
+        border-radius: 18px;
+        padding: 14px 16px;
+        box-shadow: 0 8px 20px rgba(123, 45, 91, 0.06);
+      }
+      .detail .ic {
+        flex: none;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font-size: 1.35rem;
+        background: linear-gradient(135deg, #fde3ec, var(--lilac));
+      }
+      .detail small {
+        display: block;
+        font-size: 0.72rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+      }
+      .detail strong {
+        display: block;
+        font-family: var(--font-serif);
+        font-size: 1.28rem;
+        color: var(--plum);
+        font-weight: 600;
+        line-height: 1.25;
+      }
+
+      /* Cuenta regresiva */
+      .countdown {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin: 8px auto 0;
+        max-width: 380px;
+      }
+      .cd {
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(201, 162, 75, 0.4);
+        border-radius: 18px;
+        padding: 14px 4px 10px;
+        box-shadow: 0 8px 20px rgba(123, 45, 91, 0.08);
+      }
+      .cd b {
+        display: block;
+        font-family: var(--font-serif);
+        font-size: clamp(1.8rem, 9vw, 2.4rem);
+        color: var(--plum);
+        line-height: 1;
+        font-weight: 600;
+      }
+      .cd span {
+        font-size: 0.68rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+      }
+      .cd-done {
+        font-family: var(--font-script);
+        font-size: 2.2rem;
+        color: var(--plum);
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: center;
+        margin-top: 24px;
+      }
+
+      /* Cómo llegar */
+      .glass {
+        margin: 0 auto 60px;
+        background: rgba(255, 255, 255, 0.72);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(201, 162, 75, 0.35);
+        border-radius: 28px;
+        padding: clamp(22px, 6vw, 34px);
+        box-shadow: 0 20px 44px rgba(123, 45, 91, 0.1);
+      }
+      .address {
+        font-family: var(--font-serif);
+        font-size: 1.3rem;
+        line-height: 1.4;
+        color: var(--ink);
+        margin: 6px 0 18px;
+      }
+      .address b {
+        color: var(--plum);
+      }
+      .map {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        border: 0;
+        border-radius: 20px;
+        box-shadow: 0 12px 28px rgba(123, 45, 91, 0.15);
+        background: var(--lilac);
+      }
+      .nav-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-top: 18px;
+      }
+      @media (min-width: 420px) {
+        .nav-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .nav-grid .wide {
+          grid-column: 1 / -1;
+        }
+      }
+      .note {
+        font-size: 0.85rem;
+        color: var(--ink-soft);
+        margin: 14px 0 0;
+        line-height: 1.5;
+      }
+
+      footer {
+        padding: 20px 20px calc(80px + var(--safe-b));
+        color: var(--ink-soft);
+      }
+
+      footer .sig {
+        font-family: var(--font-script);
+        font-size: 2.2rem;
+        color: var(--plum);
+        line-height: 1.2;
+      }
+
+      footer .made-by {
+        font-family: var(--font-serif);
+        font-style: italic;
+        font-size: 1.25rem;
+        margin: 10px 0 0;
+        color: var(--ink-soft);
+      }
+
+      footer .made-by b {
+        font-style: normal;
+        font-weight: 600;
+        color: var(--plum);
+      }
+
+      footer small {
+        display: block;
+        margin-top: 6px;
+        letter-spacing: 0.08em;
+      }
+      #install-btn {
+        display: none;
+        margin-top: 18px;
+      }
+      .ios-hint {
+        display: none;
+        margin: 14px auto 0;
+        max-width: 32ch;
+        font-size: 0.85rem;
+        line-height: 1.5;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(22px);
+        transition:
+          opacity 1s ease,
+          transform 1s ease;
+      }
+      .reveal.show {
+        opacity: 1;
+        transform: none;
+      }
+
+      .confetti {
+        position: fixed;
+        top: -14px;
+        z-index: 800;
+        pointer-events: none;
+        will-change: transform;
+        animation: fall linear forwards;
+      }
+      @keyframes fall {
+        to {
+          transform: translate3d(var(--sway), 108vh, 0) rotate(var(--spin));
+        }
+      }
+
+      #toast {
+        position: fixed;
+        left: 50%;
+        bottom: calc(76px + var(--safe-b));
+        transform: translate(-50%, 20px);
+        background: var(--ink);
+        color: #fff;
+        padding: 12px 22px;
+        border-radius: 999px;
+        font-size: 0.92rem;
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          opacity 0.3s,
+          transform 0.3s;
+        z-index: 1100;
+        max-width: 90vw;
+      }
+      #toast.on {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="locked">
+    <div class="bg" aria-hidden="true">
+      <div class="blob b1"></div>
+      <div class="blob b2"></div>
+      <div class="blob b3"></div>
+      <img
+        src="../img/orchid.png"
+        class="orchid o1"
+        alt=""
+        onerror="this.remove()"
+      />
+      <img
+        src="../img/orchid.png"
+        class="orchid o2"
+        alt=""
+        onerror="this.remove()"
+      />
+      <img
+        src="../img/orchid.png"
+        class="orchid o3"
+        alt=""
+        onerror="this.remove()"
+      />
+    </div>
+
+    <button
+      id="music-btn"
+      class="music-btn"
+      aria-label="Silenciar música"
+      type="button"
+    >
+      <svg class="on" viewBox="0 0 24 24">
+        <path d="M11 5 6 9H3v6h3l5 4V5z" />
+        <path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" />
+      </svg>
+      <svg class="off" viewBox="0 0 24 24">
+        <path d="M11 5 6 9H3v6h3l5 4V5z" />
+        <path d="m16 9.5 5 5m0-5-5 5" />
+      </svg>
+    </button>
+
+    <!-- PORTADA -->
+    <div id="cover">
+      <p class="eyebrow">Tienes una invitación</p>
+      <div class="seal" aria-hidden="true">🌸</div>
+      <h1 class="cover-name">Eli Kathaleia</h1>
+      <p class="cover-sub">te espera en su partida de torta</p>
+      <button id="open-btn" class="btn" type="button">
+        Abrir invitación ✨
+      </button>
+    </div>
+
+    <!-- INVITACIÓN -->
+    <div id="invite">
+      <section class="hero">
+        <div class="hero-photo">
+          <img
+            src="../img/katha-y-papa.jpeg"
+            alt="Eli Kathaleia"
+            onerror="this.parentElement.style.display = 'none'"
+          />
+        </div>
+        <p class="eyebrow">Estás invitado a celebrar</p>
+        <div class="hero-13">13</div>
+        <h2 class="hero-title">Eli Kathaleia</h2>
+        <p class="hero-sub">Su era dorada empieza con una torta 🎂</p>
+        <div class="scroll-cue">Desliza</div>
+      </section>
+
+      <section>
+        <div class="wrap">
+          <div class="divider">✦</div>
+
+          <article class="card reveal">
+            <h2 class="section-title">Partida de torta</h2>
+            <p class="lead">
+              Quiero compartir contigo este día tan especial.
+              <b>Te espero</b> para soplar las velas, brindar y celebrar juntos
+              sus <b>13 primaveras</b>.
+            </p>
+
+            <div class="details">
+              <div class="detail">
+                <div class="ic">📅</div>
+                <div>
+                  <small>Fecha</small
+                  ><strong>Lunes 16 de noviembre de 2026</strong>
+                </div>
+              </div>
+              <div class="detail">
+                <div class="ic">🕔</div>
+                <div><small>Hora</small><strong>5:00 p. m.</strong></div>
+              </div>
+              <div class="detail">
+                <div class="ic">📍</div>
+                <div>
+                  <small>Lugar</small
+                  ><strong
+                    >Calle 22 # 1W-33, Barrio Portal del Valle,
+                    Piedecuesta</strong
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="actions">
+              <button class="btn gold" id="cal-btn" type="button">
+                📅 Agregar al calendario
+              </button>
+              <a class="btn ghost" href="#como-llegar">📍 Cómo llegar</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <div class="wrap">
+          <div class="reveal" style="margin-bottom: 60px">
+            <h2 class="section-title">Faltan…</h2>
+            <div class="countdown" id="countdown" aria-live="off">
+              <div class="cd"><b id="cd-d">0</b><span>días</span></div>
+              <div class="cd"><b id="cd-h">0</b><span>horas</span></div>
+              <div class="cd"><b id="cd-m">0</b><span>min</span></div>
+              <div class="cd"><b id="cd-s">0</b><span>seg</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="como-llegar">
+        <div class="wrap">
+          <div class="glass reveal">
+            <h2 class="section-title">Cómo llegar</h2>
+            <p class="address">
+              <b>Calle 22 # 1W-33</b><br />Barrio Portal del Valle<br />Piedecuesta,
+              Santander
+            </p>
+
+            <iframe
+              class="map"
+              id="map"
+              title="Mapa del lugar"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              src="https://www.google.com/maps?q=Calle+22+%231W-33,+Portal+del+Valle,+Piedecuesta,+Santander,+Colombia&output=embed"
+            ></iframe>
+
+            <div class="nav-grid">
+              <a class="btn" id="gmaps" target="_blank" rel="noopener" href="#"
+                >🗺️ Google Maps</a
+              >
+              <a class="btn" id="waze" target="_blank" rel="noopener" href="#"
+                >🚗 Waze</a
+              >
+              <a
+                class="btn ghost"
+                id="apple"
+                target="_blank"
+                rel="noopener"
+                href="#"
+                >🍎 Apple Maps</a
+              >
+              <button class="btn ghost" id="copy-addr" type="button">
+                📋 Copiar dirección
+              </button>
+            </div>
+            <p class="note">
+              Si el mapa no te marca el punto exacto, copia la dirección y
+              búscala en tu app favorita.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="wrap">
+          <div class="card reveal" style="margin-bottom: 40px">
+            <h2 class="section-title">¿Me acompañas?</h2>
+            <p class="lead">
+              Confirma tu asistencia o comparte esta invitación con quien
+              quieras que celebre con nosotros.
+            </p>
+            <div class="actions">
+              <a class="btn" id="rsvp" target="_blank" rel="noopener" href="#"
+                >💬 Confirmar por WhatsApp</a
+              >
+              <button class="btn ghost" id="share-btn" type="button">
+                🔗 Compartir invitación
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <div class="sig">Te espero con mucho amor 🌸</div>
+        <p class="made-by">Hecho con amor por tu papá <b>Marbin Alarcón</b></p>
+        <small>Piedecuesta · 2026</small>
+        <button class="btn ghost" id="install-btn" type="button">
+          Guardar en mi pantalla de inicio
+        </button>
+        <p class="ios-hint" id="ios-hint">
+          En iPhone: toca <b>Compartir</b> y luego
+          <b>“Agregar a pantalla de inicio”</b>.
+        </p>
+      </footer>
+    </div>
+
+    <div id="toast" role="status"></div>
+
+    <audio id="bg-music" loop preload="none">
+      <source src="../audio/Trece_Primaveras.mp3" type="audio/mpeg" />
+    </audio>
+
+    <script>
+      (() => {
+        "use strict";
+
+        /* ===== Configuración del evento (edita aquí) ===== */
+        const EVENT = {
+          title: "Partida de torta · Los 13 de Eli Kathaleia",
+          // 16 nov 2026, 5:00 p. m. hora Colombia (UTC-5)
+          start: new Date("2026-11-16T17:00:00-05:00"),
+          durationHours: 3,
+          placeName: "Casa de Eli Kathaleia",
+          address:
+            "Calle 22 #1W-33, Barrio Portal del Valle, Piedecuesta, Santander, Colombia",
+          addressShort:
+            "Calle 22 # 1W-33, Barrio Portal del Valle, Piedecuesta, Santander",
+          // Número de WhatsApp para confirmar, con indicativo y sin "+" (ej: 573001234567).
+          // Si lo dejas vacío, WhatsApp abrirá para elegir contacto.
+          whatsapp: "",
+        };
+
+        const $ = (id) => document.getElementById(id);
+        const reduceMotion = matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+        const q = encodeURIComponent(EVENT.address);
+
+        function toast(text) {
+          const t = $("toast");
+          t.textContent = text;
+          t.classList.add("on");
+          clearTimeout(toast._t);
+          toast._t = setTimeout(() => t.classList.remove("on"), 3000);
+        }
+
+        /* ===== Música ===== */
+        const music = $("bg-music");
+        const musicBtn = $("music-btn");
+        let musicStarted = false;
+        function startMusic() {
+          if (musicStarted) return;
+          musicStarted = true;
+          music.volume = 0.5;
+          music.play().catch(() => {
+            musicStarted = false;
+          });
+          musicBtn.classList.add("visible");
+        }
+        musicBtn.addEventListener("click", () => {
+          if (!musicStarted) {
+            startMusic();
+            return;
+          }
+          music.muted = !music.muted;
+          musicBtn.classList.toggle("muted", music.muted);
+          musicBtn.setAttribute(
+            "aria-label",
+            music.muted ? "Activar música" : "Silenciar música",
+          );
+          if (!music.muted && music.paused) music.play().catch(() => {});
+        });
+        music.addEventListener(
+          "error",
+          () => musicBtn.classList.remove("visible"),
+          true,
+        );
+
+        /* ===== Apertura ===== */
+        $("open-btn").addEventListener("click", () => {
+          startMusic();
+          $("cover").classList.add("hide");
+          const inv = $("invite");
+          inv.style.display = "block";
+          document.body.classList.remove("locked");
+          window.scrollTo(0, 0);
+          requestAnimationFrame(() =>
+            requestAnimationFrame(() => inv.classList.add("show")),
+          );
+          confettiBurst();
+          setupReveal();
+          setTimeout(() => $("cover").remove(), 1300);
+        });
+
+        function confettiBurst() {
+          if (reduceMotion) return;
+          const colors = [
+            "#f3a6bb",
+            "#c9a24b",
+            "#eadcfa",
+            "#b04a8f",
+            "#f1d98a",
+          ];
+          for (let i = 0; i < 80; i++) {
+            setTimeout(() => {
+              const c = document.createElement("div");
+              c.className = "confetti";
+              const w = 6 + Math.random() * 6;
+              c.style.width = w + "px";
+              c.style.height = w * (Math.random() > 0.5 ? 1 : 1.8) + "px";
+              c.style.borderRadius = Math.random() > 0.5 ? "50%" : "2px";
+              c.style.left = Math.random() * 100 + "vw";
+              c.style.background =
+                colors[Math.floor(Math.random() * colors.length)];
+              c.style.setProperty("--sway", (Math.random() - 0.5) * 140 + "px");
+              c.style.setProperty("--spin", Math.random() * 720 - 360 + "deg");
+              c.style.animationDuration = 2.6 + Math.random() * 2.4 + "s";
+              document.body.appendChild(c);
+              setTimeout(() => c.remove(), 5500);
+            }, Math.random() * 2000);
+          }
+        }
+
+        function setupReveal() {
+          const obs = new IntersectionObserver(
+            (entries, o) => {
+              entries.forEach((e) => {
+                if (e.isIntersecting) {
+                  e.target.classList.add("show");
+                  o.unobserve(e.target);
+                }
+              });
+            },
+            { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
+          );
+          document.querySelectorAll(".reveal").forEach((el) => obs.observe(el));
+        }
+
+        /* ===== Cuenta regresiva ===== */
+        function tick() {
+          const diff = EVENT.start - Date.now();
+          const box = $("countdown");
+          if (diff <= 0) {
+            box.outerHTML = '<p class="cd-done">¡Hoy es el gran día! 🎉</p>';
+            clearInterval(tick._i);
+            return;
+          }
+          const s = Math.floor(diff / 1000);
+          $("cd-d").textContent = Math.floor(s / 86400);
+          $("cd-h").textContent = Math.floor((s % 86400) / 3600);
+          $("cd-m").textContent = Math.floor((s % 3600) / 60);
+          $("cd-s").textContent = s % 60;
+        }
+        tick();
+        tick._i = setInterval(tick, 1000);
+
+        /* ===== Calendario (.ics) ===== */
+        function icsDate(d) {
+          return d
+            .toISOString()
+            .replace(/[-:]/g, "")
+            .replace(/\.\d{3}/, "");
+        }
+        $("cal-btn").addEventListener("click", () => {
+          const end = new Date(
+            EVENT.start.getTime() + EVENT.durationHours * 3600000,
+          );
+          const esc = (s) => s.replace(/[,;]/g, (m) => "\\" + m);
+          const ics = [
+            "BEGIN:VCALENDAR",
+            "VERSION:2.0",
+            "PRODID:-//Eli Kathaleia 13//ES",
+            "CALSCALE:GREGORIAN",
+            "BEGIN:VEVENT",
+            "UID:eli13-" + EVENT.start.getTime() + "@invitacion",
+            "DTSTAMP:" + icsDate(new Date()),
+            "DTSTART:" + icsDate(EVENT.start),
+            "DTEND:" + icsDate(end),
+            "SUMMARY:" + esc(EVENT.title),
+            "LOCATION:" + esc(EVENT.address),
+            "DESCRIPTION:" +
+              esc("Te espero para celebrar los 13 años de Eli Kathaleia 🎂"),
+            "BEGIN:VALARM",
+            "TRIGGER:-PT2H",
+            "ACTION:DISPLAY",
+            "DESCRIPTION:Partida de torta de Eli",
+            "END:VALARM",
+            "END:VEVENT",
+            "END:VCALENDAR",
+          ].join("\r\n");
+          const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "partida-de-torta-eli.ics";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          setTimeout(() => URL.revokeObjectURL(url), 2000);
+          toast("Evento listo para tu calendario 📅");
+        });
+
+        /* ===== Cómo llegar ===== */
+        $("gmaps").href =
+          "https://www.google.com/maps/dir/?api=1&destination=" + q;
+        $("waze").href = "https://waze.com/ul?q=" + q + "&navigate=yes";
+        $("apple").href = "https://maps.apple.com/?daddr=" + q;
+        $("copy-addr").addEventListener("click", async () => {
+          try {
+            await navigator.clipboard.writeText(EVENT.addressShort);
+            toast("Dirección copiada 📋");
+          } catch {
+            toast(EVENT.addressShort);
+          }
+        });
+
+        /* ===== RSVP y compartir ===== */
+        const rsvpText =
+          "¡Hola! Confirmo mi asistencia a la partida de torta de Eli Kathaleia el 16 de noviembre a las 5:00 p. m. 🎂🌸";
+        $("rsvp").href =
+          "https://wa.me/" +
+          EVENT.whatsapp +
+          "?text=" +
+          encodeURIComponent(rsvpText);
+
+        $("share-btn").addEventListener("click", async () => {
+          const data = {
+            title: "Los 13 de Eli Kathaleia",
+            text: "Estás invitado a la partida de torta de Eli Kathaleia: 16 de noviembre, 5:00 p. m. 🎂",
+            url: location.href.split("#")[0],
+          };
+          if (navigator.share) {
+            try {
+              await navigator.share(data);
+            } catch {}
+            return;
+          }
+          try {
+            await navigator.clipboard.writeText(data.url);
+            toast("Enlace copiado 🔗");
+          } catch {
+            toast(data.url);
+          }
+        });
+
+        /* ===== PWA ===== */
+        let deferredPrompt = null;
+        const installBtn = $("install-btn");
+        const standalone =
+          matchMedia("(display-mode: standalone)").matches ||
+          navigator.standalone;
+        window.addEventListener("beforeinstallprompt", (e) => {
+          e.preventDefault();
+          deferredPrompt = e;
+          if (!standalone) installBtn.style.display = "inline-flex";
+        });
+        installBtn.addEventListener("click", async () => {
+          if (!deferredPrompt) return;
+          deferredPrompt.prompt();
+          await deferredPrompt.userChoice;
+          deferredPrompt = null;
+          installBtn.style.display = "none";
+        });
+        window.addEventListener("appinstalled", () => {
+          installBtn.style.display = "none";
+        });
+        if (/iphone|ipad|ipod/i.test(navigator.userAgent) && !standalone)
+          $("ios-hint").style.display = "block";
+
+        if ("serviceWorker" in navigator) {
+          window.addEventListener("load", () => {
+            navigator.serviceWorker
+              .register("./sw.js")
+              .catch((err) => console.log("SW error", err));
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "Invitación · Los 13 de Eli Kathaleia",
+  "short_name": "Eli 13 🎂",
+  "description": "Invitación a la partida de torta de Eli Kathaleia: 16 de noviembre de 2026, 5:00 p. m.",
+  "lang": "es",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fff7f9",
+  "theme_color": "#7b2d5b",
+  "icons": [
+    { "src": "../img/pwa-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "../img/pwa-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
