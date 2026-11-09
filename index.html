@@ -862,7 +862,7 @@
               title="Mapa del lugar"
               loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"
-              src="https://www.google.com/maps?q=Calle+22+%231W-33,+Portal+del+Valle,+Piedecuesta,+Santander,+Colombia&output=embed"
+              src="https://www.google.com/maps?q=6.9730774,-73.0519577&z=18&output=embed"
             ></iframe>
 
             <div class="nav-grid">
@@ -949,7 +949,9 @@
             "Calle 22 # 1W-33, Barrio Portal del Valle, Piedecuesta, Santander",
           // Número de WhatsApp para confirmar, con indicativo y sin "+" (ej: 573001234567).
           // Si lo dejas vacío, WhatsApp abrirá para elegir contacto.
-          whatsapp: "",
+          whatsapp: "3205578471",
+          lat: 6.9730774,
+          lng: -73.0519577,
         };
 
         const $ = (id) => document.getElementById(id);
@@ -1123,10 +1125,11 @@
         });
 
         /* ===== Cómo llegar ===== */
+        const coords = EVENT.lat + "," + EVENT.lng;
         $("gmaps").href =
-          "https://www.google.com/maps/dir/?api=1&destination=" + q;
-        $("waze").href = "https://waze.com/ul?q=" + q + "&navigate=yes";
-        $("apple").href = "https://maps.apple.com/?daddr=" + q;
+          "https://www.google.com/maps/dir/?api=1&destination=" + coords;
+        $("waze").href = "https://waze.com/ul?ll=" + coords + "&navigate=yes";
+        $("apple").href = "https://maps.apple.com/?daddr=" + coords;
         $("copy-addr").addEventListener("click", async () => {
           try {
             await navigator.clipboard.writeText(EVENT.addressShort);
