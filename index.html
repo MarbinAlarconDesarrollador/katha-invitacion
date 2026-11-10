@@ -50,12 +50,16 @@
 
     <meta
       property="og:image"
-      content="https://marbinalarcondesarrollador.github.io/katha-invitacion/img/preview.png"
+      content="https://marbinalarcondesarrollador.github.io/katha-invitacion/preview.png?v=2"
     />
 
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:secure_url"
+      content="https://marbinalarcondesarrollador.github.io/katha-invitacion/preview.png?v=2"
+    />
 
     <meta
       property="og:image:alt"
@@ -77,7 +81,7 @@
 
     <meta
       name="twitter:image"
-      content="https://marbinalarcondesarrollador.github.io/katha-invitacion/img/preview.png"
+      content="https://marbinalarcondesarrollador.github.io/katha-invitacion/preview.png?v=2"
     />
     <title>Invitación · Los 13 de Eli Kathaleia</title>
 
@@ -530,6 +534,42 @@
         margin-bottom: 14px;
       }
 
+      .intro-card {
+        margin: 0 auto 28px;
+      }
+      .intro-copy {
+        font-family: var(--font-serif);
+        font-size: clamp(1.2rem, 4.6vw, 1.55rem);
+        line-height: 1.7;
+        color: #4a3a50;
+        margin: 0;
+      }
+      .intro-copy strong {
+        color: var(--plum);
+        font-weight: 600;
+      }
+      .intro-badges {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 18px;
+      }
+      .intro-badges span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #fde3ec, #f4e6ff);
+        border: 1px solid rgba(176, 74, 143, 0.2);
+        color: var(--plum);
+        font-size: 0.76rem;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        font-weight: 500;
+      }
+
       .details {
         display: grid;
         gap: 14px;
@@ -842,6 +882,22 @@
       <section>
         <div class="wrap">
           <div class="divider">✦</div>
+
+          <article class="card intro-card reveal">
+            <h2 class="section-title">Una pequeña invitación</h2>
+            <p class="intro-copy">
+              Cada paso de Eli ha sido una razón para celebrar, y hoy quiero
+              compartir contigo un momento muy especial: una tarde llena de
+              <strong>amor</strong>, <strong>felicidad</strong> y dulces
+              recuerdos. Porque sus <strong>13 primaveras</strong> merecen ser
+              vividas entre quienes la quieren y la acompañan con el corazón.
+            </p>
+            <div class="intro-badges">
+              <span>Amor</span>
+              <span>Familia</span>
+              <span>Celebración</span>
+            </div>
+          </article>
 
           <article class="card reveal">
             <h2 class="section-title">Partida de torta</h2>
@@ -1201,22 +1257,36 @@
           encodeURIComponent(rsvpText);
 
         $("share-btn").addEventListener("click", async () => {
+          const invitation =
+            "🎉 ¡Estás invitado! 🎂\n\n" +
+            "Acompáñanos a celebrar la partida de torta de Eli Kathaleia por sus 13 años.\n\n" +
+            "📅 Lunes 16 de noviembre de 2026\n" +
+            "🕔 5:00 p. m.\n" +
+            "📍 " +
+            EVENT.addressShort +
+            ".\n\n" +
+            "¡Te esperamos para celebrar juntos! 🌸";
+          const url = location.href.split("#")[0];
           const data = {
             title: "Los 13 de Eli Kathaleia",
-            text: "Estás invitado a la partida de torta de Eli Kathaleia: 16 de noviembre, 5:00 p. m. 🎂",
-            url: location.href.split("#")[0],
+            text: invitation,
+            url,
           };
           if (navigator.share) {
             try {
               await navigator.share(data);
-            } catch {}
+            } catch (error) {
+              if (error.name !== "AbortError") {
+                toast("No fue posible compartir desde este dispositivo.");
+              }
+            }
             return;
           }
           try {
-            await navigator.clipboard.writeText(data.url);
-            toast("Enlace copiado 🔗");
+            await navigator.clipboard.writeText(invitation + "\n\n" + url);
+            toast("Invitación y enlace copiados. ¡Ya puedes compartirlos! 🔗");
           } catch {
-            toast(data.url);
+            toast("No fue posible copiar. Comparte este enlace: " + url);
           }
         });
 
